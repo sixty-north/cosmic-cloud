@@ -18,17 +18,17 @@ provider "aws" {
 
 # The public key was generated from the AWS .pem file using:
 #
-#  ssh-keygen -y -f rob-key-pair-ireland.pem > rob-key-pair-ireland.pub
+#  ssh-keygen -y -f <my-key-name>.pem > <my-key-name>.pub
 #
 # Note that if the key-pair is already in AWS it can be imported
 # into Terraform with:
 #
-#   terraform import aws_key_pair.personal rob-key-pair-ireland
+#   terraform import aws_key_pair.personal <my-key-name>
 #
-# which adds they key-pair to the Terraform state.
+# which adds the key-pair to the Terraform state.
 resource "aws_key_pair" "personal" {
-  key_name   = "rob-key-pair-ireland"
-  public_key = "${file("~/.ssh/rob-key-pair-ireland.pub")}"
+  key_name   = "${var.key_name}"
+  public_key = "${file("${var.public_key_filepath}")}"
 }
 
 resource "aws_security_group" "allow_ssh" {
@@ -68,7 +68,7 @@ resource "aws_security_group" "allow_amqp" {
 resource "aws_instance" "message-broker-host" {
   ami             = "${var.message_broker_ami}"         # Amazon Linux HVM
   instance_type   = "t2.micro"
-  key_name        = "rob-key-pair-ireland"
+  key_name        = "${var.key_name}"
   vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}", "${aws_security_group.allow_amqp.id}"]
   count           = "${var.num_message_broker_hosts}"
 }
@@ -76,7 +76,7 @@ resource "aws_instance" "message-broker-host" {
 resource "aws_instance" "worker-host" {
   ami             = "${var.celery_worker_ami}"         # Amazon Linux HVM
   instance_type   = "t2.micro"
-  key_name        = "rob-key-pair-ireland"
+  key_name        = "${var.key_name}"
 
   vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]
   count           = "${var.num_celery_worker_hosts}"

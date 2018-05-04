@@ -5,6 +5,14 @@ variable "region" {
   default = "eu-west-1"
 }
 
+variable "key_name" {
+  description = "The AWS key pair name"
+}
+
+variable "public_key_filepath" {
+  description = "The public key (*.pub) filepath"
+}
+
 # For AWS EC2 spot instances, we're allowed 20 in total
 
 variable "num_message_broker_hosts" {

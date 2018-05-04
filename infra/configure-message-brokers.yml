@@ -1,8 +1,4 @@
 - hosts: message-broker-hosts
-
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-
   tasks:
 
   - name: Wait for the remote system to become available
