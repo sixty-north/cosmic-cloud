@@ -96,4 +96,4 @@ Take care to clean up after any experiments.
 
 2. Destroy the infrastructure
 
-    $ terraform destroy
+       $ terraform destroy
