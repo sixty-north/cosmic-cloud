@@ -7,7 +7,7 @@ Take care to clean up after any experiments.
 ## Initial setup (once only)
 
 1. You need to provide your own `terraform.tfvars`. It will need to contain
-   your equivalent of for AWS:
+   your equivalent of this, for AWS:
 
        access_key = "ABCDEFGHIJKLMNOPQRST"
        secret_key = "ABCDEFGHIJKLMNOPQRST123456789ABCDEFGGHIJ"
