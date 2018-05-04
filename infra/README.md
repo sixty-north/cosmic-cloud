@@ -73,6 +73,7 @@ Take care to clean up after any experiments.
 
        $ ssh -i ~/.ssh/<your-private-key>.pem ubuntu@ec2-34-240-69-169.eu-west-1.compute.amazonaws.com
 
+
 ## (Optional) Ansible sanity check
 
 1. Or you can use Ansible to query the uptime of all the celery worker hosts:
@@ -84,8 +85,22 @@ Take care to clean up after any experiments.
 
        $ ansible celery-worker-hosts -a uptime
 
+
 ## Configure the message broker host
 
+1. Use the `configure-message-brokers.yml` playbook to configure the message
+   broker host. This host will be configured with RabbitMQ to work with Celery:
+
+       $ ansible-playbook configure-message-brokers.yml
+
+
+## Configure the Celery worker hosts
+
+1. Use the `configure-celery-workers.yml` playbook to configure the Celery
+   worker hosts. This host will be configured with a Celery works which
+   subscribe to the message broker:
+
+       $ ansible-playbook configure-celery-workers.yml
 
 
 ## Tear down the infrastructure
