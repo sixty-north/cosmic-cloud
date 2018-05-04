@@ -22,7 +22,7 @@ Take care to clean up after any experiments.
 
 3. Change into the `infra` directory of your clone of this repo.
 
-    $ cd infra
+       $ cd infra
 
 4. Install the terraform-inventory dynamic inventory for Ansible. To do this,
    clone the repository somewhere else, then symlink the Python file into this
@@ -67,7 +67,7 @@ Take care to clean up after any experiments.
 
        $ ./terraform-inventory
 
-9. (Optional) You can log into one of the machines as the `ubuntu` user:
+5. (Optional) You can log into one of the machines as the `ubuntu` user:
    as we're using the Ubuntu 16.04 AMI. Get the hostname from the invocation of
    `terraform-inventory`.
 
@@ -75,11 +75,7 @@ Take care to clean up after any experiments.
 
 ## (Optional) Ansible sanity check
 
-
-## Configure the message broker host
-
-
-10. Or you can use ansible to query the uptime of all the celery worker hosts:
+1. Or you can use Ansible to query the uptime of all the celery worker hosts:
 
        $ ansible celery-worker-hosts --private-key ~/.ssh/<your-private-key>.pem -i terraform-inventory -a uptime
 
@@ -88,10 +84,16 @@ Take care to clean up after any experiments.
 
        $ ansible celery-worker-hosts -a uptime
 
-11. Ask Terraform what it will need to do to tear down the infrastructure.
+## Configure the message broker host
+
+
+
+## Tear down the infrastructure
+
+1. Ask Terraform what it will need to do to tear down the infrastructure.
 
        $ terraform plan -destroy
 
-12. Destroy the infrastructure
+2. Destroy the infrastructure
 
-       $ terraform destroy
+    $ terraform destroy
