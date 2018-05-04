@@ -6,11 +6,15 @@ Take care to clean up after any experiments.
 
 ## Initial setup (once only)
 
+0. You need an AWS key pair. You can generate these through AWS.
+
 1. You need to provide your own `terraform.tfvars`. It will need to contain
    your equivalent of this, for AWS:
 
        access_key = "ABCDEFGHIJKLMNOPQRST"
        secret_key = "ABCDEFGHIJKLMNOPQRST123456789ABCDEFGGHIJ"
+       key_name = "<aws-key-name>"
+       public_key_filepath = "~/.ssh/<public-key-file>.pub"
 
 2. Install the terraform-provider-ansible plugin for Terraform. Do this by
    running:
@@ -37,6 +41,14 @@ Take care to clean up after any experiments.
 
        $ terraform init -backend-config=terraform.tfvars
 
+6. If you key already exists in AWS (for example, because you created it there)
+   import it into Terraform:
+
+       $ terraform import aws_key_pair.personal <aws-key-name>
+
+   If you don't do this, Terraform will later give you an error about
+   duplicate keys when it tries to upload the keys again.
+
 6. Copy `ansible.cfg.template` to `ansible.cfg` and provide the path to your
    SSH private key, which Ansible will use to connect to the hosts on AWS.
 
@@ -62,21 +74,23 @@ Take care to clean up after any experiments.
 
    This enables you to get IP addresses and whatnot.
 
-4. (Optional) Run terraform-inventory to extract information about what has been
-   provisioned, in a format suitable for consumption by Ansible:
+## (Optional) Ansible sanity check
+
+1. We use an Ansible dynamic inventory which queries the Terraform state. You
+   can run it directly to see which hosts have been provisioned by Terraform,
+   in a format that Ansible can consume:
 
        $ ./terraform-inventory
 
-5. (Optional) You can log into one of the machines as the `ubuntu` user:
+2. You can log into one of the machines as the `ubuntu` user:
    as we're using the Ubuntu 16.04 AMI. Get the hostname from the invocation of
-   `terraform-inventory`.
+   `terraform-inventory`, above.
 
-       $ ssh -i ~/.ssh/<your-private-key>.pem ubuntu@ec2-34-240-69-169.eu-west-1.compute.amazonaws.com
+      $ ssh -i ~/.ssh/<your-private-key>.pem ubuntu@ec2-34-240-69-169.eu-west-1.compute.amazonaws.com
 
-
-## (Optional) Ansible sanity check
-
-1. Or you can use Ansible to query the uptime of all the celery worker hosts:
+3. You can also use Ansible to run ad-hoc command on the host groups defined in
+   this inventory. For example, to query the uptime of all the celery worker
+   hosts:
 
        $ ansible celery-worker-hosts --private-key ~/.ssh/<your-private-key>.pem -i terraform-inventory -a uptime
 
