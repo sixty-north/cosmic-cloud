@@ -20,7 +20,7 @@ variable "num_message_broker_hosts" {
 }
 
 variable "num_celery_worker_hosts" {
-    default = 3
+    default = 15
 }
 
 variable "message_broker_ami" {

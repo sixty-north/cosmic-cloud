@@ -116,6 +116,17 @@ Take care to clean up after any experiments.
 
        $ ansible-playbook configure-celery-workers.yml
 
+## A test with a very simple Celery client
+
+1. The playbooks will have written a local file `celeryconfig.py` which contains
+   location information for the message broker running on AWS. A **very** simple
+   Celery worker which performs a deliberately inefficient sort is present in
+   sorting_task.py, and a client-side runner to create tasks, in runner.py.
+   This needs to be run from a Python environment which has Celery 3.1.25
+   available:
+
+       $ python runner.py
+
 
 ## Tear down the infrastructure
 
