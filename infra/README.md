@@ -4,34 +4,34 @@ PLAYING WITH THIS STUFF CREATES INFRASTRUCTURE WHICH COSTS MONEY!
 
 Take care to clean up after any experiments.
 
-## Inital setup (once only)
+## Initial setup (once only)
 
 1. You need to provide your own `terraform.tfvars`. It will need to contain
    your equivalent of for AWS:
 
-     access_key = "ABCDEFGHIJKLMNOPQRST"
-     secret_key = "ABCDEFGHIJKLMNOPQRST123456789ABCDEFGGHIJ"
+    access_key = "ABCDEFGHIJKLMNOPQRST"
+    secret_key = "ABCDEFGHIJKLMNOPQRST123456789ABCDEFGGHIJ"
 
 2. Install the terraform-provider-ansible plugin for Terraform. Do this by
    running:
 
-     $ go get github.com/nbering/terraform-provider-ansible
-     $ cd $GOPATH/src/github.com/nbering/terraform-provider-ansible
-     $ make
-     $ cp $GOPATH/bin/terraform-provider-ansible ~/.terraform.d/plugins/darwin_amd64/terraform-provider-ansible
+    $ go get github.com/nbering/terraform-provider-ansible
+    $ cd $GOPATH/src/github.com/nbering/terraform-provider-ansible
+    $ make
+    $ cp $GOPATH/bin/terraform-provider-ansible ~/.terraform.d/plugins/darwin_amd64/terraform-provider-ansible
 
 3. Change into the `infra` directory of your clone of this repo.
 
-     $ cd infra
+    $ cd infra
 
 4. Install the terraform-inventory dynamic inventory for Ansible. To do this,
    clone the repository somewhere else, then symlink the Python file into this
    directory with a more sensible name:
 
-     $ pushd <somewhere-else>
-     $ git clone https://github.com/nbering/terraform-inventory.git
-     $ popd
-     $ ln -s <somewhere-else>/terraform-inventory/terraform.py ./terraform-inventory
+    $ pushd <somewhere-else>
+    $ git clone https://github.com/nbering/terraform-inventory.git
+    $ popd
+    $ ln -s <somewhere-else>/terraform-inventory/terraform.py ./terraform-inventory
 
 5. Initialize the Terraform backend:
 
@@ -65,7 +65,7 @@ Take care to clean up after any experiments.
 4. (Optional) Run terraform-inventory to extract information about what has been
    provisioned, in a format suitable for consumption by Ansible:
 
-     $ ./terraform-inventory
+    $ ./terraform-inventory
 
 9. (Optional) You can log into one of the machines as the `ubuntu` user:
    as we're using the Ubuntu 16.04 AMI. Get the hostname from the invocation of
@@ -81,7 +81,7 @@ Take care to clean up after any experiments.
 
 10. Or you can use ansible to query the uptime of all the celery worker hosts:
 
-    $ ansible celery-worker-hosts --private-key ~/.ssh/rob-key-pair-ireland.pem -i terraform-inventory -a uptime
+    $ ansible celery-worker-hosts --private-key ~/.ssh/<your-private-key>.pem -i terraform-inventory -a uptime
 
    although the arguments are defaulted in ansible.cfg so you can just do if the
    default values suit:
