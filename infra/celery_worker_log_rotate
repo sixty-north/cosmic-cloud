@@ -1,0 +1,12 @@
+/var/log/celery_worker/*.log {
+    daily
+    missingok
+    rotate 14
+    compress
+    notifempty
+    create 0640 ubuntu ubuntu
+    sharedscripts
+    postrotate
+        supervisorctl restart celery_worker
+    endscript
+}

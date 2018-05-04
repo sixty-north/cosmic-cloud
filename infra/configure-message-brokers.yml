@@ -1,0 +1,78 @@
+- hosts: message-broker-hosts
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+
+  - name: Wait for the remote system to become available
+    wait_for_connection:
+      timeout: 300
+
+  - name: "Working around Ansible lameness on Ubuntu..."
+    become: yes
+    become_method: sudo
+    apt:
+      pkg: aptitude
+      state: present
+      update_cache: yes
+      cache_valid_time: 3600
+    with_items:
+      - aptitude
+
+  - name: Update apt repositories
+    become: yes
+    become_method: sudo
+    apt:
+      update_cache: yes
+      upgrade: yes
+
+  - name: Install RabbitMQ
+    become: yes
+    become_method: sudo
+    apt:
+      name: rabbitmq-server
+      state: present
+
+  - name: Ensure RabbitMQ is running
+    become: yes
+    become_method: sudo
+    systemd:
+      name: rabbitmq-server.service
+      enabled: yes
+      state: started
+
+  - name: Adds a RabbitMQ vhost
+    become: yes
+    become_method: sudo
+    rabbitmq_vhost:
+      name: camelot
+      state: present
+    notify:
+      - restart rabbitmq
+
+  - name: Adds a RabbitMQ user
+    become: yes
+    become_method: sudo
+    rabbitmq_user:
+      user: merlin
+      password: avalon
+      permissions:
+        - vhost: camelot
+          configure_priv: .*
+          read_priv: .*
+          write_priv: .*
+      state: present
+    notify:
+      - "restart rabbitmq"
+
+  handlers:
+
+    - name: Restart RabbitMQ
+      become: yes
+      become_method: sudo
+      systemd:
+        name: rabbitmq-server.service
+        enabled: yes
+        state: restarted
+      listen: "restart rabbitmq"
