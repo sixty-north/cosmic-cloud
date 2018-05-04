@@ -86,7 +86,7 @@ Take care to clean up after any experiments.
    as we're using the Ubuntu 16.04 AMI. Get the hostname from the invocation of
    `terraform-inventory`, above.
 
-      $ ssh -i ~/.ssh/<your-private-key>.pem ubuntu@ec2-34-240-69-169.eu-west-1.compute.amazonaws.com
+       $ ssh -i ~/.ssh/<your-private-key>.pem ubuntu@ec2-34-240-69-169.eu-west-1.compute.amazonaws.com
 
 3. You can also use Ansible to run ad-hoc command on the host groups defined in
    this inventory. For example, to query the uptime of all the celery worker
