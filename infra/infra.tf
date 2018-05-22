@@ -67,7 +67,7 @@ resource "aws_security_group" "allow_amqp" {
 
 resource "aws_instance" "message-broker-host" {
   ami             = "${var.message_broker_ami}"         # Amazon Linux HVM
-  instance_type   = "t2.micro"
+  instance_type   = "t2.small"
   key_name        = "${var.key_name}"
   vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}", "${aws_security_group.allow_amqp.id}"]
   count           = "${var.num_message_broker_hosts}"
@@ -75,7 +75,7 @@ resource "aws_instance" "message-broker-host" {
 
 resource "aws_instance" "worker-host" {
   ami             = "${var.celery_worker_ami}"         # Amazon Linux HVM
-  instance_type   = "t2.micro"
+  instance_type   = "c4.8xlarge"
   key_name        = "${var.key_name}"
 
   vpc_security_group_ids = ["${aws_security_group.allow_ssh.id}"]

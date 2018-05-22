@@ -20,15 +20,15 @@ variable "num_message_broker_hosts" {
 }
 
 variable "num_celery_worker_hosts" {
-    default = 15
+    default = 19
 }
 
 variable "message_broker_ami" {
-    default = "ami-f90a4880"  # Ubuntu 16.04
+    default = "ami-705d6a09"  # Ubuntu 17.10 EBS / previously Ubuntu 16.04 "ami-f90a4880"
 }
 
 variable "celery_worker_ami" {
-    default = "ami-f90a4880"  # Ubuntu 16.04
+    default = "ami-705d6a09"  # Ubuntu 17.10 EBS / previously Ubuntu 16.04 "ami-f90a4880"
 }
 
 variable "message_broker_admin_username" {
